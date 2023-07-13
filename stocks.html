@@ -2,12 +2,28 @@
 <html>
 <head>
     <title>D3 Visualization</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script> <!-- This line includes the D3 library -->
+    <style>
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    .line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 2px;
+    }
+
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js"></script> 
 </head>
 <body>
   <h1>Hello, World!</h1>
   <p>This is a D3 visualization.</p>
-  <svg></svg> <!-- Your D3 visualization will be drawn in this SVG element -->
+  <div id="chart"></div> 
   <script src="d3code.js"></script>
 </body>
 </html>
