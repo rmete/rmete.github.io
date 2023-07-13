@@ -163,7 +163,7 @@ function drawChart(dataFile) {
 }
 
 document.getElementById('load-data-1987').addEventListener('click', function() {
-  drawChart("SP500_1987.csv");
+  drawChart("SP500_1987_2.csv");
 });
 
 document.getElementById('load-data-1929').addEventListener('click', function() {
