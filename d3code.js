@@ -448,7 +448,7 @@ function drawChart(dataFile) {
             tooltip.transition()
                 .duration(200)
                 .style("opacity", .9);
-            tooltip.html("Date: " + d.date.toDateString() + "<br/>Value: " + d.value)
+            tooltip.html("Date: " + "<br/>Value: " + d.value) //  d.date.toDateString() + 
                 .style("left", (d3.event.pageX + 5) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
         })
