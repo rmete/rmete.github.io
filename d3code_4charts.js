@@ -41,7 +41,7 @@ var yAxis = d3.axisLeft(y);
 var line = d3.line()
     .x(function(d) { return x(d.date); })
     .y(function(d) { return y(d.value); });
-    
+
 var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
@@ -342,7 +342,7 @@ function drawChart4(dataFile) {
 }
 
 document.getElementById('load-data-1987').addEventListener('click', function() {
-  drawChart1("SP500_1987.csv");
+  drawChart1("SP500_1987_2.csv");
 });
 
 document.getElementById('load-data-1929').addEventListener('click', function() {
@@ -350,15 +350,15 @@ document.getElementById('load-data-1929').addEventListener('click', function() {
 });
 
 document.getElementById('load-data-2008').addEventListener('click', function() {
-  drawChart3("SP500_2008.csv");
+  drawChart3("SP500_2008_2.csv");
 });
 
 document.getElementById('load-data-2020').addEventListener('click', function() {
-  drawChart4("SP500_2020.csv");
+  drawChart4("SP500_2020_2.csv");
 });
 
 // Load all datasets by default
 drawChart1("DOW_1929.csv");
-drawChart2("SP500_1987.csv");
-drawChart3("SP500_2008.csv");
-drawChart4("SP500_2020.csv");
+drawChart2("SP500_1987_2.csv");
+drawChart3("SP500_2008_2.csv");
+drawChart4("SP500_2020_2.csv");
