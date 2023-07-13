@@ -59,11 +59,9 @@ var margin = {top: 20, right: 20, bottom: 30, left: 50},
 
 var parseDate = d3.timeParse("%Y-%m-%d");
 
-var x = d3.scaleTime()
-    .range([0, width]);
+var x = d3.scaleTime().range([0, width]);
 
-var y = d3.scaleLinear()
-    .range([height, 0]);
+var y = d3.scaleLinear().range([height, 0]);
 
 var xAxis = d3.axisBottom(x);
 
@@ -79,34 +77,49 @@ var svg = d3.select("#chart").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("DOW_1929.csv", function(error, data) {
-  if (error) throw error;
+function drawChart(dataFile) {
+  svg.selectAll('*').remove();
 
-  data.forEach(function(d) {
-    d.date = parseDate(d.date);
-    d.value = +d.value;
+  d3.csv(dataFile, function(error, data) {
+    if (error) throw error;
+
+    data.forEach(function(d) {
+      d.date = parseDate(d.date);
+      d.value = +d.value;
+    });
+
+    x.domain(d3.extent(data, function(d) { return d.date; }));
+    y.domain(d3.extent(data, function(d) { return d.value; }));
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+      .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Close");
+
+    svg.append("path")
+        .datum(data)
+        .attr("class", "line")
+        .attr("d", line);
   });
+}
 
-  x.domain(d3.extent(data, function(d) { return d.date; }));
-  y.domain(d3.extent(data, function(d) { return d.value; }));
-
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
-
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Value");
-
-  svg.append("path")
-      .datum(data)
-      .attr("class", "line")
-      .attr("d", line);
+document.getElementById('load-data-1987').addEventListener('click', function() {
+  drawChart("SP500_1987.csv");
 });
+
+document.getElementById('load-data-1929').addEventListener('click', function() {
+  drawChart("DOW_1929.csv");
+});
+
+// Load the 1929 data by default
+drawChart("DOW_1929.csv");
