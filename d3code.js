@@ -77,12 +77,46 @@ var svg = d3.select("#chart").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+// function drawChart(dataFile) {
+//   svg.selectAll('*').remove();
+
+//   d3.csv(dataFile, function(error, data) {
+//     if (error) throw error;
+
+//     data.forEach(function(d) {
+//       d.date = parseDate(d.date);
+//       d.value = +d.value;
+//     });
+
+//     x.domain(d3.extent(data, function(d) { return d.date; }));
+//     y.domain(d3.extent(data, function(d) { return d.value; }));
+
+//     svg.append("g")
+//         .attr("class", "x axis")
+//         .attr("transform", "translate(0," + height + ")")
+//         .call(xAxis);
+
+//     svg.append("g")
+//         .attr("class", "y axis")
+//         .call(yAxis)
+//       .append("text")
+//         .attr("transform", "rotate(-90)")
+//         .attr("y", 6)
+//         .attr("dy", ".71em")
+//         .style("text-anchor", "end")
+//         .text("Close");
+
+//     svg.append("path")
+//         .datum(data)
+//         .attr("class", "line")
+//         .attr("d", line);
+//   });
+// }
+
 function drawChart(dataFile) {
   svg.selectAll('*').remove();
 
-  d3.csv(dataFile, function(error, data) {
-    if (error) throw error;
-
+  d3.csv(dataFile).then(function(data) {
     data.forEach(function(d) {
       d.date = parseDate(d.date);
       d.value = +d.value;
@@ -110,6 +144,8 @@ function drawChart(dataFile) {
         .datum(data)
         .attr("class", "line")
         .attr("d", line);
+  }).catch(function(error){
+    console.log(error);
   });
 }
 
