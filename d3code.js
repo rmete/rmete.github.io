@@ -131,10 +131,6 @@ document.getElementById('load-data-2008').addEventListener('click', function() {
   drawChart("SP500_2008_2.csv");
 });
 
-document.getElementById('load-data-2020').addEventListener('click', function() {
-  drawChart("SP500_2020_2.csv");
-});
-
 document.getElementById('load-data-1870').addEventListener('click', function() {
   drawChart("sp500_1870s.csv");
 });
