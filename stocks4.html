@@ -23,17 +23,18 @@
     }
 
     .tooltip {
-      position: absolute;
-      text-align: center;
-      width: 120px;
-      height: 50px;
-      padding: 2px;
-      font: 12px sans-serif;
-      background: lightsteelblue;
-      border: 0px;
-      border-radius: 8px;
-      pointer-events: none;
-    }
+    position: absolute;
+    text-align: center;
+    padding: 10px;
+    font: 14px sans-serif;
+    background: rgba(70, 130, 180, 0.9);  /* semi-transparent SteelBlue */
+    color: #fff;  /* White text */
+    border: 1px solid #ddd;  /* thin border */
+    border-radius: 4px;  /* rounded corners */
+    pointer-events: none;  /* to prevent the tooltip itself from triggering events */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);  /* slight shadow for 3D effect */
+    line-height: 1.5;  /* more space between lines */
+}
 
     .circle {
       fill: none;
@@ -110,6 +111,6 @@
     <button id="load-data-2010">2010s</button>
     <button id="load-data-2020">2020s</button>
   </div>
-  <script src="d3code.js"></script>
+  <script src="d3code2.js"></script>
 </body>
 </html>
