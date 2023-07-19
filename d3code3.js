@@ -22,10 +22,9 @@ var svg = d3.select("#chart").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-// Create a tooltip dot but set its opacity to 0
-var tooltipDot = svg.append("circle")
-  .attr("r", 5)
-  .attr("opacity", 0);
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
 function drawChart(dataFile) {
   svg.selectAll('*').remove();
@@ -39,9 +38,10 @@ function drawChart(dataFile) {
     summary = "This chart represents the DOW index for the year 1929...";
   }
 
-  var tooltip = d3.select("body").append("div")
-  .attr("class", "tooltip")
-  .style("opacity", 0);
+  // Create a tooltip dot but set its opacity to 0
+  var tooltipDot = svg.append("circle")
+    .attr("r", 5)
+    .attr("opacity", 0);
 
   svg.append("text") 
     .attr("x", (width / 2))             
@@ -96,7 +96,7 @@ function drawChart(dataFile) {
           tooltip.transition()
                  .duration(200)
                  .style("opacity", .9);
-          tooltip.html("Value: " + d.Value)
+          tooltip.html("Value: " + d.Value + "<br>Date: " + d3.timeFormat("%Y-%m-%d")(d.Date))
                  .style("left", (d3.pointer(event)[0] + 5) + "px")
                  .style("top", (d3.pointer(event)[1] - 28) + "px");
           tooltipDot.attr("opacity", 1)
