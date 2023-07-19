@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>D3 Visualization</title>
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      background-color: #f5f5f5;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    .line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 2px;
+    }
+
+    .tooltip {
+      position: absolute;
+      text-align: center;
+      width: 120px;
+      height: 50px;
+      padding: 2px;
+      font: 12px sans-serif;
+      background: lightsteelblue;
+      border: 0px;
+      border-radius: 8px;
+      pointer-events: none;
+    }
+
+    .circle {
+      fill: none;
+      stroke: black;
+    }
+
+    .text {
+      font-size: 10px;
+    }
+
+    .button-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    button {
+      color: #fff;
+      background-color: #007bff;
+      border-color: #007bff;
+      margin: 0 5px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #chart {
+      margin: 0 auto;
+      width: 80%;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/d3-svg-annotation@2/d3-annotation.min.js"></script>
+</head>
+<body>
+  <h1 style="text-align: center;">S&P 500 Time Series Analysis</h1>
+  <div id="chart"></div>
+  <div class="button-container">
+    <button id="load-data-1870">1870s</button>
+    <button id="load-data-1880">1880s</button>
+    <button id="load-data-1890">1890s</button>
+    <button id="load-data-1900">1900s</button>
+    <button id="load-data-1910">1910s</button>
+    <button id="load-data-1920">1920s</button>
+    <button id="load-data-1929">1929</button>
+    <button id="load-data-1930">1930s</button>
+    <button id="load-data-1940">1940s</button>
+    <button id="load-data-1950">1950s</button>
+    <button id="load-data-1960">1960s</button>
+    <button id="load-data-1970">1970s</button>
+    <button id="load-data-1980">1980s</button>
+    <button id="load-data-1987">1987</button>
+    <button id="load-data-1990">1990s</button>
+    <button id="load-data-2000">2000s</button>
+    <button id="load-data-2008">2008</button>
+    <button id="load-data-2010">2010s</button>
+    <button id="load-data-2020">2020s</button>
+  </div>
+  <script src="d3code.js"></script>
+</body>
+</html>
