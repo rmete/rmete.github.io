@@ -46,11 +46,6 @@ function drawChart(dataFile) {
     .style("font-weight", "bold")  
     .text(title);
 
-  // Create a tooltip dot but set its opacity to 0
-  var tooltipDot = svg.append("circle")
-    .attr("r", 5)
-    .attr("opacity", 0);
-
   d3.csv(dataFile).then(function(data) {
     data.forEach(function(d) {
       d.Date = parseDate(d.Date);
@@ -80,21 +75,18 @@ function drawChart(dataFile) {
         .attr("class", "line")
         .attr("d", line);
 
-    // Invisible vertical lines for tooltips
-    svg.selectAll("vertLines")
+    // Voronoi
+    const voronoi = d3.Delaunay
+        .from(data, d => x(d.Date), d => y(d.Value))
+        .voronoi([0, 0, width, height]);
+
+    svg.append("g")
+        .attr("class", "voronoi")
+        .selectAll("path")
         .data(data)
-        .enter()
-        .append("line")
-        .attr("x1", function(d) { return x(d.Date); })
-        .attr("x2", function(d) { return x(d.Date); })
-        .attr("y1", height)
-        .attr("y2", function(d) { return y(d.Value); })
-        .attr("stroke", "transparent")
-        .attr("stroke-width", 10)
+        .enter().append("path")
+        .attr("d", (d, i) => voronoi.renderCell(i))
         .on("mouseover", function(event, d) {
-            tooltipDot.attr("opacity", 1)
-                      .attr("cx", x(d.Date))
-                      .attr("cy", y(d.Value));
             tooltip.transition()
                    .duration(200)
                    .style("opacity", .9);
@@ -103,11 +95,11 @@ function drawChart(dataFile) {
                    .style("top", (d3.pointer(event)[1] - 28) + "px");
         })
         .on("mouseout", function(d) {
-            tooltipDot.attr("opacity", 0);
             tooltip.transition()
                    .duration(500)
                    .style("opacity", 0);
         });
+      
     svg.append("text")
     .attr("x", 0)             
     .attr("y", height + margin.bottom)
@@ -118,6 +110,21 @@ function drawChart(dataFile) {
     console.log(error);
   });
 }
+
+// add all the event listeners as before...
+
+
+document.getElementById('load-data-1987').addEventListener('click', function() {
+  drawChart("SP500_1987_2.csv");
+});
+
+document.getElementById('load-data-1929').addEventListener('click', function() {
+  drawChart("DOW_1929.csv");
+});
+
+document.getElementById('load-data-2008').addEventListener('click', function() {
+  drawChart("SP500_2008_2.csv");
+});
 
 document.getElementById('load-data-1870').addEventListener('click', function() {
   drawChart("sp500_1870s.csv");
@@ -181,6 +188,3 @@ document.getElementById('load-data-2020').addEventListener('click', function() {
 
 // Load the 1929 data by default
 drawChart("sp500_1870s.csv");
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
