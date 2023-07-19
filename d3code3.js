@@ -26,6 +26,11 @@ var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
+// Create a tooltip dot but set its opacity to 0
+var tooltipDot = svg.append("circle")
+  .attr("r", 5)
+  .attr("opacity", 0);
+
 function drawChart(dataFile) {
   svg.selectAll('*').remove();
 
@@ -70,36 +75,40 @@ function drawChart(dataFile) {
         .style("text-anchor", "end")
         .text("Close");
 
-    // Voronoi
-    const voronoi = d3.Delaunay
-        .from(data, d => x(d.Date), d => y(d.Value))
-        .voronoi([0, 0, width, height]);
-
-    svg.append("g")
-        .attr("class", "voronoi")
-        .selectAll("path")
-        .data(data)
-        .enter().append("path")
-        .attr("d", (d, i) => voronoi.renderCell(i))
-        .on("mouseover", function(event, d) {
-            tooltip.transition()
-                   .duration(200)
-                   .style("opacity", .9);
-            tooltip.html("Value: " + d.Value)
-                   .style("left", (d3.pointer(event)[0] + 5) + "px")
-                   .style("top", (d3.pointer(event)[1] - 28) + "px");
-        })
-        .on("mouseout", function(d) {
-            tooltip.transition()
-                   .duration(500)
-                   .style("opacity", 0);
-        });
-
-    // Append the line after the Voronoi diagram
     svg.append("path")
         .datum(data)
         .attr("class", "line")
         .attr("d", line);
+
+    // Create invisible lines at each data point
+    svg.selectAll(".hover-line")
+      .data(data)
+      .enter().append("line")
+      .attr("class", "hover-line")
+      .attr("x1", d => x(d.Date))
+      .attr("y1", 0)
+      .attr("x2", d => x(d.Date))
+      .attr("y2", height)
+      .style("stroke", "transparent")
+      .style("stroke-width", "10px")
+      .style("cursor", "pointer")
+      .on("mouseover", function(event, d) {
+          tooltip.transition()
+                 .duration(200)
+                 .style("opacity", .9);
+          tooltip.html("Value: " + d.Value)
+                 .style("left", (d3.pointer(event)[0] + 5) + "px")
+                 .style("top", (d3.pointer(event)[1] - 28) + "px");
+          tooltipDot.attr("opacity", 1)
+            .attr("cx", x(d.Date))
+            .attr("cy", y(d.Value));
+      })
+      .on("mouseout", function(d) {
+          tooltip.transition()
+                 .duration(500)
+                 .style("opacity", 0);
+          tooltipDot.attr("opacity", 0);
+      });
       
     svg.append("text")
     .attr("x", 0)             
