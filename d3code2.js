@@ -5,11 +5,9 @@ var margin = {top: 20, right: 20, bottom: 30, left: 50},
 var parseDate = d3.timeParse("%Y-%m-%d");
 
 var x = d3.scaleTime().range([0, width]);
-
 var y = d3.scaleLinear().range([height, 0]);
 
 var xAxis = d3.axisBottom(x);
-
 var yAxis = d3.axisLeft(y);
 
 var line = d3.line()
@@ -26,14 +24,36 @@ var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-// Create a tooltip dot but set its opacity to 0
-var tooltipDot = svg.append("circle")
-    .attr("r", 5)
-    .attr("opacity", 0);
+var bisectDate = d3.bisector(function(d) { return d.Date; }).left;
 
-// Tooltip rectangles
-var tooltipArea = svg.append("g")
-                     .attr("class", "tooltipArea");
+var focus = svg.append("g")
+    .style("display", "none");
+
+focus.append("line")
+    .attr("class", "x-hover-line hover-line")
+    .attr("y1", 0)
+    .attr("y2", height);
+
+svg.append("rect")
+    .attr("class", "overlay")
+    .attr("width", width)
+    .attr("height", height)
+    .on("mouseover", function() { focus.style("display", null); })
+    .on("mouseout", function() { focus.style("display", "none"); })
+    .on("mousemove", mousemove);
+
+function mousemove(event) {
+    var x0 = x.invert(d3.pointer(event)[0]),
+        i = bisectDate(data, x0, 1),
+        d0 = data[i - 1],
+        d1 = data[i],
+        d = x0 - d0.Date > d1.Date - x0 ? d1 : d0;
+
+    focus.attr("transform", "translate(" + x(d.Date) + ",0)");
+    tooltip.html("Value: " + d.Value)
+        .style("left", (d3.pointer(event)[0] + 5) + "px")
+        .style("top", (d3.pointer(event)[1] - 28) + "px");
+}
 
 function drawChart(dataFile) {
   svg.selectAll('*').remove();
@@ -83,39 +103,6 @@ function drawChart(dataFile) {
         .datum(data)
         .attr("class", "line")
         .attr("d", line);
-
-    // Create the rectangles for tooltip
-    tooltipArea.selectAll("rect")
-      .data(data)
-      .enter().append("rect")
-      .attr("class", "tooltipRect")
-      .attr("x", function(d, i) {
-        return i < data.length - 1 ? x(d.Date) : x(d.Date) - (x(data[i-1].Date) - x(d.Date));
-      })
-      .attr("y", 0)
-      .attr("width", function(d, i) {
-        return i < data.length - 1 ? x(data[i+1].Date) - x(d.Date) : x(d.Date) - x(data[i-1].Date);
-      })
-      .attr("height", height)
-      .style("fill", "none")
-      .style("pointer-events", "all")
-      .on("mouseover", function(event, d) {
-        tooltipDot.attr("opacity", 1)
-                  .attr("cx", x(d.Date))
-                  .attr("cy", y(d.Value));
-        tooltip.transition()
-               .duration(200)
-               .style("opacity", .9);
-        tooltip.html("Value: " + d.Value)
-               .style("left", (d3.pointer(event)[0] + 5) + "px")
-               .style("top", (d3.pointer(event)[1] - 28) + "px");
-      })
-      .on("mouseout", function(d) {
-        tooltipDot.attr("opacity", 0);
-        tooltip.transition()
-               .duration(500)
-               .style("opacity", 0);
-      });
 
     svg.append("text")
     .attr("x", 0)             

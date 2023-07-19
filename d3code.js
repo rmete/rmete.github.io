@@ -13,8 +13,8 @@ var xAxis = d3.axisBottom(x);
 var yAxis = d3.axisLeft(y);
 
 var line = d3.line()
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.value); });
+    .x(function(d) { return x(d.Date); })
+    .y(function(d) { return y(d.Value); });
 
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -55,12 +55,12 @@ function drawChart(dataFile) {
 
   d3.csv(dataFile).then(function(data) {
     data.forEach(function(d) {
-      d.date = parseDate(d.date);
-      d.value = +d.value;
+      d.Date = parseDate(d.Date);
+      d.Value = +d.Value;
     });
 
-    x.domain(d3.extent(data, function(d) { return d.date; }));
-    y.domain(d3.extent(data, function(d) { return d.value; }));
+    x.domain(d3.extent(data, function(d) { return d.Date; }));
+    y.domain(d3.extent(data, function(d) { return d.Value; }));
 
     svg.append("g")
         .attr("class", "x axis")
@@ -87,18 +87,18 @@ function drawChart(dataFile) {
         .data(data)
         .enter().append("circle")
         .attr("r", 5)
-        .attr("cx", function(d) { return x(d.date); })
-        .attr("cy", function(d) { return y(d.value); })
+        .attr("cx", function(d) { return x(d.Date); })
+        .attr("cy", function(d) { return y(d.Value); })
         .style("fill", "none")
         .style("pointer-events", "all")
         .on("mouseover", function(event, d) {
             tooltipDot.attr("opacity", 1)
-                      .attr("cx", x(d.date))
-                      .attr("cy", y(d.value));
+                      .attr("cx", x(d.Date))
+                      .attr("cy", y(d.Value));
             tooltip.transition()
                    .duration(200)
                    .style("opacity", .9);
-            tooltip.html("Value: " + d.value)
+            tooltip.html("Value: " + d.Value)
                    .style("left", (d3.pointer(event)[0] + 5) + "px")
                    .style("top", (d3.pointer(event)[1] - 28) + "px");
         })
@@ -135,8 +135,72 @@ document.getElementById('load-data-2020').addEventListener('click', function() {
   drawChart("SP500_2020_2.csv");
 });
 
+document.getElementById('load-data-1870').addEventListener('click', function() {
+  drawChart("sp500_1870s.csv");
+});
+
+document.getElementById('load-data-1880').addEventListener('click', function() {
+  drawChart("sp500_1880s.csv");
+});
+
+document.getElementById('load-data-1890').addEventListener('click', function() {
+  drawChart("sp500_1890s.csv");
+});
+
+document.getElementById('load-data-1900').addEventListener('click', function() {
+  drawChart("sp500_1900s.csv");
+});
+document.getElementById('load-data-1910').addEventListener('click', function() {
+  drawChart("sp500_1910s.csv");
+});
+
+document.getElementById('load-data-1920').addEventListener('click', function() {
+  drawChart("sp500_1920s.csv");
+});
+
+document.getElementById('load-data-1930').addEventListener('click', function() {
+  drawChart("sp500_1930s.csv");
+});
+
+document.getElementById('load-data-1940').addEventListener('click', function() {
+  drawChart("sp500_1940s.csv");
+});
+document.getElementById('load-data-1950').addEventListener('click', function() {
+  drawChart("sp500_1950s.csv");
+});
+
+document.getElementById('load-data-1960').addEventListener('click', function() {
+  drawChart("sp500_1960s.csv");
+});
+
+document.getElementById('load-data-1970').addEventListener('click', function() {
+  drawChart("sp500_1970s.csv");
+});
+
+document.getElementById('load-data-1980').addEventListener('click', function() {
+  drawChart("sp500_1980s.csv");
+});
+
+document.getElementById('load-data-1990').addEventListener('click', function() {
+  drawChart("sp500_1990s.csv");
+});
+
+document.getElementById('load-data-2000').addEventListener('click', function() {
+  drawChart("sp500_2000s.csv");
+});
+document.getElementById('load-data-2010').addEventListener('click', function() {
+  drawChart("sp500_2010s.csv");
+});
+document.getElementById('load-data-2020').addEventListener('click', function() {
+  drawChart("sp500_2020s.csv");
+});
+
 // Load the 1929 data by default
-drawChart("DOW_1929.csv");
+drawChart("sp500_1870s.csv");
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
