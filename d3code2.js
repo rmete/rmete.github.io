@@ -13,8 +13,8 @@ var xAxis = d3.axisBottom(x);
 var yAxis = d3.axisLeft(y);
 
 var line = d3.line()
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.value); });
+    .x(function(d) { return x(d.Date); })
+    .y(function(d) { return y(d.Value); });
 
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -26,7 +26,14 @@ var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
+// Create a tooltip dot but set its opacity to 0
+var tooltipDot = svg.append("circle")
+    .attr("r", 5)
+    .attr("opacity", 0);
 
+// Tooltip rectangles
+var tooltipArea = svg.append("g")
+                     .attr("class", "tooltipArea");
 
 function drawChart(dataFile) {
   svg.selectAll('*').remove();
@@ -48,19 +55,14 @@ function drawChart(dataFile) {
     .style("font-weight", "bold")  
     .text(title);
 
-  // Create a tooltip dot but set its opacity to 0
-  var tooltipDot = svg.append("circle")
-    .attr("r", 5)
-    .attr("opacity", 0);
-
   d3.csv(dataFile).then(function(data) {
     data.forEach(function(d) {
-      d.date = parseDate(d.date);
-      d.value = +d.value;
+      d.Date = parseDate(d.Date);
+      d.Value = +d.Value;
     });
 
-    x.domain(d3.extent(data, function(d) { return d.date; }));
-    y.domain(d3.extent(data, function(d) { return d.value; }));
+    x.domain(d3.extent(data, function(d) { return d.Date; }));
+    y.domain(d3.extent(data, function(d) { return d.Value; }));
 
     svg.append("g")
         .attr("class", "x axis")
@@ -82,32 +84,39 @@ function drawChart(dataFile) {
         .attr("class", "line")
         .attr("d", line);
 
-    // Invisible circles for tooltips
-    svg.selectAll("dot")
-        .data(data)
-        .enter().append("circle")
-        .attr("r", 5)
-        .attr("cx", function(d) { return x(d.date); })
-        .attr("cy", function(d) { return y(d.value); })
-        .style("fill", "none")
-        .style("pointer-events", "all")
-        .on("mouseover", function(event, d) {
-            tooltipDot.attr("opacity", 1)
-                      .attr("cx", x(d.date))
-                      .attr("cy", y(d.value));
-            tooltip.transition()
-                   .duration(200)
-                   .style("opacity", .9);
-            tooltip.html("Value: " + d.value)
-                   .style("left", (d3.pointer(event)[0] + 5) + "px")
-                   .style("top", (d3.pointer(event)[1] - 28) + "px");
-        })
-        .on("mouseout", function(d) {
-            tooltipDot.attr("opacity", 0);
-            tooltip.transition()
-                   .duration(500)
-                   .style("opacity", 0);
-        });
+    // Create the rectangles for tooltip
+    tooltipArea.selectAll("rect")
+      .data(data)
+      .enter().append("rect")
+      .attr("class", "tooltipRect")
+      .attr("x", function(d, i) {
+        return i < data.length - 1 ? x(d.Date) : x(d.Date) - (x(data[i-1].Date) - x(d.Date));
+      })
+      .attr("y", 0)
+      .attr("width", function(d, i) {
+        return i < data.length - 1 ? x(data[i+1].Date) - x(d.Date) : x(d.Date) - x(data[i-1].Date);
+      })
+      .attr("height", height)
+      .style("fill", "none")
+      .style("pointer-events", "all")
+      .on("mouseover", function(event, d) {
+        tooltipDot.attr("opacity", 1)
+                  .attr("cx", x(d.Date))
+                  .attr("cy", y(d.Value));
+        tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+        tooltip.html("Value: " + d.Value)
+               .style("left", (d3.pointer(event)[0] + 5) + "px")
+               .style("top", (d3.pointer(event)[1] - 28) + "px");
+      })
+      .on("mouseout", function(d) {
+        tooltipDot.attr("opacity", 0);
+        tooltip.transition()
+               .duration(500)
+               .style("opacity", 0);
+      });
+
     svg.append("text")
     .attr("x", 0)             
     .attr("y", height + margin.bottom)
