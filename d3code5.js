@@ -52,6 +52,11 @@ function drawChart(dataFile) {
     .style("font-weight", "bold")  
     .text(title);
 
+  // Create a tooltip dot but set its opacity to 0
+  var tooltipDot = svg.append("circle")
+  .attr("r", 5)
+  .attr("opacity", 0);
+
   d3.csv(dataFile).then(function(data) {
     data.forEach(function(d) {
       d.Date = parseDate(d.Date);
@@ -105,6 +110,9 @@ function drawChart(dataFile) {
             hoverDot.attr('cx', x(d.Date))
                     .attr('cy', y(d.Value))
                     .style("opacity", 1);
+            tooltipDot.attr("opacity", 1)
+              .attr("cx", x(d.Date))
+              .attr("cy", y(d.Value));
         })
         .on("mouseout", function(d) {
             tooltip.transition()
@@ -112,6 +120,7 @@ function drawChart(dataFile) {
                    .style("opacity", 0);
             // Hide the hover dot
             hoverDot.style("opacity", 0);
+            tooltipDot.attr("opacity", 0);
         });
       
     svg.append("text")
