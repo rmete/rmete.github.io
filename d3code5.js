@@ -26,12 +26,6 @@ var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-var hoverDot = svg.append('circle')
-    .style("fill", "red")
-    .style("stroke", "black")
-    .attr('r', 5)
-    .style("opacity", 0);  // initially set to invisible
-
 function drawChart(dataFile) {
   svg.selectAll('*').remove();
 
@@ -106,10 +100,6 @@ function drawChart(dataFile) {
             tooltip.html("Value: " + d.Value)
                    .style("left", (d3.pointer(event)[0] + 5) + "px")
                    .style("top", (d3.pointer(event)[1] - 28) + "px");
-            // Show the hover dot
-            hoverDot.attr('cx', x(d.Date))
-                    .attr('cy', y(d.Value))
-                    .style("opacity", 1);
             tooltipDot.attr("opacity", 1)
               .attr("cx", x(d.Date))
               .attr("cy", y(d.Value));
@@ -118,8 +108,6 @@ function drawChart(dataFile) {
             tooltip.transition()
                    .duration(500)
                    .style("opacity", 0);
-            // Hide the hover dot
-            hoverDot.style("opacity", 0);
             tooltipDot.attr("opacity", 0);
         });
       
