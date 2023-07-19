@@ -22,10 +22,6 @@ var svg = d3.select("#chart").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var tooltip = d3.select("body").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
-
 // Create a tooltip dot but set its opacity to 0
 var tooltipDot = svg.append("circle")
   .attr("r", 5)
@@ -42,6 +38,10 @@ function drawChart(dataFile) {
     title = "DOW - 1929";
     summary = "This chart represents the DOW index for the year 1929...";
   }
+
+  var tooltip = d3.select("body").append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0);
 
   svg.append("text") 
     .attr("x", (width / 2))             
