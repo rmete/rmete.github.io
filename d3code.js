@@ -186,12 +186,12 @@ function drawChart(dataFile) {
 }
 
 // Create buttons for each decade and crash
-document.getElementById('load-data-1987').addEventListener('click', function() {
-  drawChart("SP500_1987_2.csv");
+document.getElementById('load-data-1929').addEventListener('click', function() {
+  drawChart("sp500_1929.csv");
 });
 
-document.getElementById('load-data-1929').addEventListener('click', function() {
-  drawChart("DOW_1929.csv");
+document.getElementById('load-data-1987').addEventListener('click', function() {
+  drawChart("SP500_1987_2.csv");
 });
 
 document.getElementById('load-data-2008').addEventListener('click', function() {
