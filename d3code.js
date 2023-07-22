@@ -31,7 +31,7 @@ function drawChart(dataFile) {
 
   var title, summary;
   switch(dataFile) {
-    case "SP500_1987_2.csv":
+    case "sp500_1987_daily.csv":
         title = "S&P 500 - 1987";
         summary = "The stock market crash of 1987, often referred to as 'Black Monday,' occurred on October 19, 1987. On this day, stock markets around the world crashed, shedding a huge value in a very short time. The S&P 500 fell by 20.4%, its largest one-day percentage drop in history.";
         break;
@@ -39,7 +39,7 @@ function drawChart(dataFile) {
         title = "S&P 500 - 1929";
         summary = "The stock market crash of 1929, also known as the Great Crash, began on October 24, known as 'Black Thursday.' This was the most devastating stock market crash in the history of the United States, signaling the beginning of the 10-year Great Depression. Over the course of four days, the S&P 500 index fell dramatically.";
         break;
-    case "SP500_2008_2.csv":
+    case "sp500_2008_daily.csv":
         title = "S&P 500 - 2008";
         summary = "The 2008 financial crisis, also known as the Global Financial Crisis (GFC), is considered by many economists to have been the most serious financial crisis since the Great Depression of the 1930s. The S&P 500 experienced one of its largest drops in history, falling by more than 8.8% on September 29, 2008.";
         break;
@@ -191,11 +191,11 @@ document.getElementById('load-data-1929').addEventListener('click', function() {
 });
 
 document.getElementById('load-data-1987').addEventListener('click', function() {
-  drawChart("SP500_1987_2.csv");
+  drawChart("sp500_1987_daily.csv");
 });
 
 document.getElementById('load-data-2008').addEventListener('click', function() {
-  drawChart("SP500_2008_2.csv");
+  drawChart("sp500_2008_daily.csv");
 });
 
 document.getElementById('load-data-1870').addEventListener('click', function() {
